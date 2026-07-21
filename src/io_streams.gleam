@@ -1,4 +1,3 @@
-import gleam/bit_array
 import gleam/result
 import io_streams/errors
 import io_streams/internal
@@ -53,6 +52,12 @@ pub type WriteText =
 pub type WriteBinary =
   Stream(NoRead, Write, Binary, Seek)
 
+pub type AppendText =
+  Stream(NoRead, Write, Text, NoSeek)
+
+pub type AppendBinary =
+  Stream(NoRead, Write, Binary, NoSeek)
+
 pub type ReadWriteText =
   Stream(Read, Write, Text, Seek)
 
@@ -92,7 +97,7 @@ pub fn open_write_bin(
 pub fn open_append(
   path: String,
   exclusive: Bool,
-) -> Result(WriteText, errors.SystemError) {
+) -> Result(AppendText, errors.SystemError) {
   internal.open_append(path, exclusive)
   |> result.map_error(errors.map_system_error)
   |> result.map(Stream)
@@ -101,7 +106,7 @@ pub fn open_append(
 pub fn open_append_bin(
   path: String,
   exclusive: Bool,
-) -> Result(WriteBinary, errors.SystemError) {
+) -> Result(AppendBinary, errors.SystemError) {
   internal.open_append_bin(path, exclusive)
   |> result.map_error(errors.map_system_error)
   |> result.map(Stream)
