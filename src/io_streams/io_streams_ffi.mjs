@@ -52,7 +52,7 @@ class Handle {
         this.#position = position;
     }
 
-    flush() {
+    sync() {
         fs.fsyncSync(this.#fd);
     }
 
@@ -297,7 +297,7 @@ export function seek(handle, position) {
     }
 }
 
-export function flush(handle) {
+export function sync(handle) {
     try {
         if (handle.sync) {
             handle.sync();

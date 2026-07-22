@@ -64,9 +64,9 @@ pub fn close(handle: Handle) -> Result(Nil, #(String, String))
 @external(javascript, "./io_streams_ffi.mjs", "seek")
 pub fn seek(handle: Handle, position: Int) -> Result(Nil, #(String, String))
 
-@external(erlang, "io_streams_ffi", "flush")
-@external(javascript, "./io_streams_ffi.mjs", "flush")
-pub fn flush(handle: Handle) -> Result(Nil, #(String, String))
+@external(erlang, "io_streams_ffi", "sync")
+@external(javascript, "./io_streams_ffi.mjs", "sync")
+pub fn sync(handle: Handle) -> Result(Nil, #(String, String))
 
 @external(erlang, "io_streams_ffi", "stdin")
 @external(javascript, "./io_streams_ffi.mjs", "stdin")

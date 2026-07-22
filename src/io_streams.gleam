@@ -213,11 +213,9 @@ pub fn seek(
   |> result.map_error(errors.map_stream_error)
 }
 
-pub fn flush(
-  stream: Stream(_, Write, _, _),
-) -> Result(Nil, errors.StreamError) {
+pub fn sync(stream: Stream(_, Write, _, _)) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
-  internal.flush(handle)
+  internal.sync(handle)
   |> result.map_error(errors.map_stream_error)
 }
 

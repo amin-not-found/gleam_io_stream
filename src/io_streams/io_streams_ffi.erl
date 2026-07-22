@@ -14,7 +14,7 @@
 
     close/1,
     seek/2,
-    flush/1,
+    sync/1,
 
     stdin/0,
     stdin_bin/0,
@@ -162,8 +162,8 @@ seek(IoDevice, Position) ->
     end.
 
 
-flush(IoDevice) ->
-    case file:datasync(IoDevice) of
+sync(IoDevice) ->
+    case file:sync(IoDevice) of
         ok ->
             {ok, nil};
 

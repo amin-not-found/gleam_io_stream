@@ -160,13 +160,13 @@ pub fn close_twice_test() {
   }
 }
 
-pub fn flush_test() {
-  let file = io_streams_test.path("flush.txt")
+pub fn sync_test() {
+  let file = io_streams_test.path("sync.txt")
 
   let assert Ok(stream) = io_streams.open_rw(file, True)
   let assert Ok(_) = io_streams.write_string(stream, "abc")
 
-  let assert Ok(_) = io_streams.flush(stream)
+  let assert Ok(_) = io_streams.sync(stream)
   let assert Ok(_) = io_streams.seek(stream, 0)
   let assert Ok(line) = io_streams.read_line(stream)
 
@@ -175,13 +175,13 @@ pub fn flush_test() {
   should.equal(line, "abc")
 }
 
-pub fn flush_bin_test() {
-  let file = io_streams_test.path("flush.bin")
+pub fn sync_bin_test() {
+  let file = io_streams_test.path("sync.bin")
 
   let assert Ok(stream) = io_streams.open_rw_bin(file, True)
   let assert Ok(_) = io_streams.write_bytes(stream, <<1, 2, 3>>)
 
-  let assert Ok(_) = io_streams.flush(stream)
+  let assert Ok(_) = io_streams.sync(stream)
   let assert Ok(_) = io_streams.seek(stream, 0)
   let assert Ok(line) = io_streams.read_bytes(stream, 3)
 
@@ -214,12 +214,12 @@ pub fn stderr_bin_test() {
   let assert Ok(_) = io_streams.write_bytes(stream, <<4, 5, 6>>)
 }
 
-pub fn seek_flush_read_test() {
-  let file = io_streams_test.path("seek_flush_read.txt")
+pub fn seek_sync_read_test() {
+  let file = io_streams_test.path("seek_sync_read.txt")
 
   let assert Ok(stream) = io_streams.open_rw(file, True)
   let assert Ok(_) = io_streams.write_string(stream, "abcdef")
-  let assert Ok(_) = io_streams.flush(stream)
+  let assert Ok(_) = io_streams.sync(stream)
 
   let assert Ok(_) = io_streams.seek(stream, 2)
   let assert Ok(char) = io_streams.next_char(stream)
