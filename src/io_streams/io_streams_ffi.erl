@@ -106,7 +106,10 @@ read_line(IoDevice) ->
             {error, error_with_desc(Reason)};
 
         Line when is_list(Line) ->
-            {ok, unicode:characters_to_binary(Line)}
+            {ok, unicode:characters_to_binary(Line)};
+
+        Line when is_binary(Line) ->
+            {ok, Line}
     end.
 
 %% Write operations

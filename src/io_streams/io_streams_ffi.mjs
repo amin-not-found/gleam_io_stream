@@ -312,31 +312,31 @@ export function sync(handle) {
 // Standard streams
 
 export function stdin() {
-    return process.stdin;
+    return new Handle(process.stdin.fd);
 }
 
 export function stdin_bin() {
-    return process.stdin;
+    return new Handle(process.stdin.fd);
 }
 
 
 export function stdout() {
-    return process.stdout;
+    return new Handle(process.stdout.fd);
 }
 
 
 export function stdout_bin() {
-    return process.stdout;
+    return new Handle(process.stdout.fd);
 }
 
 
 export function stderr() {
-    return process.stderr;
+    return new Handle(process.stderr.fd);
 }
 
 
 export function stderr_bin() {
-    return process.stderr;
+    return new Handle(process.stderr.fd);
 }
 
 // Error helper functions
