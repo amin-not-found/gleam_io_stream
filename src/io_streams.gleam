@@ -221,26 +221,26 @@ pub fn sync(stream: Stream(_, Write, _, _)) -> Result(Nil, errors.StreamError) {
 
 // Standard streams
 
-pub fn stdin() -> ReadText {
+pub fn stdin() -> Stream(Read, _, Text, NoSeek) {
   Stream(internal.stdin())
 }
 
-pub fn stdin_bin() -> ReadBinary {
+pub fn stdin_bin() -> Stream(Read, _, Binary, NoSeek) {
   Stream(internal.stdin_bin())
 }
 
-pub fn stdout() -> WriteText {
+pub fn stdout() -> Stream(_, Write, Text, NoSeek) {
   Stream(internal.stdout())
 }
 
-pub fn stdout_bin() -> WriteBinary {
+pub fn stdout_bin() -> Stream(_, Write, Binary, NoSeek) {
   Stream(internal.stdout_bin())
 }
 
-pub fn stderr() -> WriteText {
+pub fn stderr() -> Stream(_, Write, Text, NoSeek) {
   Stream(internal.stderr())
 }
 
-pub fn stderr_bin() -> WriteBinary {
+pub fn stderr_bin() -> Stream(_, Write, Binary, NoSeek) {
   Stream(internal.stderr_bin())
 }
