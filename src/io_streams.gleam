@@ -56,7 +56,7 @@ pub fn open_read(
   path: String,
 ) -> Result(Stream(Read, NoWrite, Text, Seek), errors.SystemError) {
   internal.open_read(path)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -65,7 +65,7 @@ pub fn open_read_bin(
   path: String,
 ) -> Result(Stream(Read, NoWrite, Binary, Seek), errors.SystemError) {
   internal.open_read_bin(path)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -75,7 +75,7 @@ pub fn open_write(
   exclusive: Bool,
 ) -> Result(Stream(NoRead, Write, Text, Seek), errors.SystemError) {
   internal.open_write(path, exclusive)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -85,7 +85,7 @@ pub fn open_write_bin(
   exclusive: Bool,
 ) -> Result(Stream(NoRead, Write, Binary, Seek), errors.SystemError) {
   internal.open_write_bin(path, exclusive)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -95,7 +95,7 @@ pub fn open_append(
   exclusive: Bool,
 ) -> Result(Stream(NoRead, Write, Text, NoSeek), errors.SystemError) {
   internal.open_append(path, exclusive)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -105,7 +105,7 @@ pub fn open_append_bin(
   exclusive: Bool,
 ) -> Result(Stream(NoRead, Write, Binary, NoSeek), errors.SystemError) {
   internal.open_append_bin(path, exclusive)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -118,7 +118,7 @@ pub fn open_rw(
   truncate: Bool,
 ) -> Result(Stream(Read, Write, Text, Seek), errors.SystemError) {
   internal.open_rw(path, truncate)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -131,7 +131,7 @@ pub fn open_rw_bin(
   truncate: Bool,
 ) -> Result(Stream(Read, Write, Binary, Seek), errors.SystemError) {
   internal.open_rw_bin(path, truncate)
-  |> result.map_error(errors.map_system_error)
+  |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
@@ -142,7 +142,7 @@ pub fn next_byte(
 ) -> Result(Int, errors.StreamError) {
   let Stream(handle) = stream
   internal.next_byte(handle)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 /// Get the next bytes in the stream. The given stream must have binary format.
@@ -155,7 +155,7 @@ pub fn read_bytes(
 ) -> Result(BitArray, errors.StreamError) {
   let Stream(handle) = stream
   internal.read_bytes(handle, count)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 /// Get the next unicode character in the stream. This uses UTF-8 encoding.
@@ -165,7 +165,7 @@ pub fn next_char(
 ) -> Result(String, errors.StreamError) {
   let Stream(handle) = stream
   internal.next_char(handle)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 /// Get the next unicode characters until a break line appears in the stream.
@@ -182,7 +182,7 @@ pub fn read_line(
 ) -> Result(String, errors.StreamError) {
   let Stream(handle) = stream
   internal.read_line(handle)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 // Writing
@@ -195,7 +195,7 @@ pub fn write_bytes(
 ) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
   internal.write_bytes(handle, bytes)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 /// Writes given string into the stream.
@@ -206,7 +206,7 @@ pub fn write_string(
 ) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
   internal.write_string(handle, string)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 /// Writes given string into the stream and then adds a line break.
@@ -217,7 +217,7 @@ pub fn write_line(
 ) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
   internal.write_line(handle, string)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 // Generic operations
@@ -226,7 +226,7 @@ pub fn write_line(
 pub fn close(stream: Stream(_, _, _, _)) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
   internal.close(handle)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 /// Seeks given stream to a specific position.
@@ -240,14 +240,14 @@ pub fn seek(
 ) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
   internal.seek(handle, position)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 /// Synchronies write calls for given.
 pub fn sync(stream: Stream(_, Write, _, _)) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
   internal.sync(handle)
-  |> result.map_error(errors.map_stream_error)
+  |> result.map_error(internal.map_stream_error)
 }
 
 // Standard streams

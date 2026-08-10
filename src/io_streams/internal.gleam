@@ -1,5 +1,8 @@
 pub type Handle
 
+import gleam/string
+import io_streams/errors
+
 type Mode {
   Read
   Write
@@ -166,5 +169,61 @@ fn rw_modes(truncate: Bool) -> List(Mode) {
   case truncate {
     True -> [Truncate, ..modes]
     False -> modes
+  }
+}
+
+pub fn map_system_error(error: #(String, String)) -> errors.SystemError {
+  let #(code, message) = error
+  let code = string.uppercase(code)
+
+  case code {
+    "EACCES" -> errors.PermissionDenied
+    "EPERM" -> errors.OperationNotPermitted
+    "ENOENT" -> errors.FileNotFound
+    "EEXIST" -> errors.FileAlreadyExists
+    "EBADF" -> errors.BadFileDescriptor
+    "ENOTDIR" -> errors.NotADirectory
+    "EISDIR" -> errors.IsADirectory
+    "ENOTEMPTY" -> errors.DirectoryNotEmpty
+    "ENAMETOOLONG" -> errors.NameTooLong
+    "EMFILE" -> errors.TooManyOpenFiles
+    "ENFILE" -> errors.SystemLimitReached
+    "ENOSPC" -> errors.NoSpaceLeft
+    "EROFS" -> errors.ReadOnlyFileSystem
+    "EBUSY" -> errors.ResourceBusy
+    "EAGAIN" -> errors.ResourceTemporarilyUnavailable
+    "EINTR" -> errors.Interrupted
+    "EINVAL" -> errors.InvalidArgument
+    "EPIPE" -> errors.BrokenPipe
+    "EXDEV" -> errors.CrossDeviceLink
+    "ENODEV" -> errors.NoSuchDevice
+    "ENOTSUP" -> errors.FunctionNotSupported
+    "EOPNOTSUPP" -> errors.FunctionNotSupported
+    "EFBIG" -> errors.FileTooLarge
+    "ELOOP" -> errors.SymbolicLinkLoop
+    "EDQUOT" -> errors.QuotaExceeded
+    "ESTALE" -> errors.StaleFileHandle
+    "ETIMEDOUT" -> errors.TimedOut
+    "ECONNRESET" -> errors.ConnectionReset
+    "ECONNABORTED" -> errors.ConnectionAborted
+    "ECONNREFUSED" -> errors.ConnectionRefused
+    "EHOSTUNREACH" -> errors.HostUnreachable
+    "ENETDOWN" -> errors.NetworkDown
+    "ENETUNREACH" -> errors.NetworkUnreachable
+    "EADDRINUSE" -> errors.AddressInUse
+    "EADDRNOTAVAIL" -> errors.AddressNotAvailable
+    "EMSGSIZE" -> errors.MessageTooLarge
+    _ -> errors.Other(code: code, message: message)
+  }
+}
+
+pub fn map_stream_error(error: #(String, String)) -> errors.StreamError {
+  let #(code, _) = error
+  let code = string.uppercase(code)
+
+  case code {
+    "EOF" -> errors.EndOfFile
+    "INVALID_UTF8" -> errors.InvalidUtf8
+    _ -> errors.System(map_system_error(error))
   }
 }
