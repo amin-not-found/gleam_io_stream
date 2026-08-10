@@ -70,6 +70,8 @@ pub fn open_read_bin(
 }
 
 /// Open file in textual write mode
+///
+/// `exclusive`: whether to fail if the file already exists
 pub fn open_write(
   path: String,
   exclusive: Bool,
@@ -80,6 +82,8 @@ pub fn open_write(
 }
 
 /// Open file in binary write mode
+///
+/// `exclusive`: whether to fail if the file already exists
 pub fn open_write_bin(
   path: String,
   exclusive: Bool,
@@ -90,6 +94,8 @@ pub fn open_write_bin(
 }
 
 /// Open file in textual append mode
+///
+/// `exclusive`: whether to fail if the file already exists
 pub fn open_append(
   path: String,
   exclusive: Bool,
@@ -100,6 +106,8 @@ pub fn open_append(
 }
 
 /// Open file in binary append mode
+///
+/// `exclusive`: whether to fail if the file already exists
 pub fn open_append_bin(
   path: String,
   exclusive: Bool,
@@ -110,6 +118,8 @@ pub fn open_append_bin(
 }
 
 /// Open file in textual read/write mode
+///
+/// `truncate`: whether to empty the file while opening it
 ///
 /// *Note*: In NodeJS a file is created if it doesn't exist on "w+" mode(with truncate).
 /// This doesn't happen in Erlang.
@@ -123,6 +133,8 @@ pub fn open_rw(
 }
 
 /// Open file in binary read/write mode
+///
+/// `truncate`: whether to empty the file while opening it
 ///
 /// *Note*: In NodeJS a file is created if it doesn't exist on "w+" mode(with truncate).
 /// This doesn't happen in Erlang.
@@ -251,6 +263,8 @@ pub fn seek(
 }
 
 /// Synchronies write calls for given.
+///
+/// *Note*: stdout/stderr actually can't be synced.
 pub fn sync(stream: Stream(_, Write, _, _)) -> Result(Nil, errors.StreamError) {
   let Stream(handle) = stream
   internal.sync(handle)
