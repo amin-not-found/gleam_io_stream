@@ -136,6 +136,7 @@ pub fn open_rw_bin(
 }
 
 /// Get the next byte in the stream.
+///
 /// The given stream must have binary format and read capability.
 pub fn next_byte(
   stream: Stream(Read, _, Binary, _),
@@ -146,6 +147,7 @@ pub fn next_byte(
 }
 
 /// Get the next bytes in the stream. The given stream must have binary format.
+///
 /// The given stream must have binary format and read capability.
 ///
 /// `count`: number of bytes to reads
@@ -159,6 +161,7 @@ pub fn read_bytes(
 }
 
 /// Get the next unicode character in the stream. This uses UTF-8 encoding.
+///
 /// The given stream must have textual format and read capability.
 pub fn next_char(
   stream: Stream(Read, _, Text, _),
@@ -188,6 +191,7 @@ pub fn read_line(
 // Writing
 
 /// Writes given bytes into the stream.
+///
 /// The given stream must have binary format and write capability.
 pub fn write_bytes(
   stream: Stream(_, Write, Binary, _),
@@ -199,6 +203,7 @@ pub fn write_bytes(
 }
 
 /// Writes given string into the stream.
+///
 /// The given stream must have textual format and write capability.
 pub fn write_string(
   stream: Stream(_, Write, Text, _),
@@ -210,6 +215,7 @@ pub fn write_string(
 }
 
 /// Writes given string into the stream and then adds a line break.
+///
 /// The given stream must have textual format and write capability.
 pub fn write_line(
   stream: Stream(_, Write, Text, _),
@@ -230,6 +236,7 @@ pub fn close(stream: Stream(_, _, _, _)) -> Result(Nil, errors.StreamError) {
 }
 
 /// Seeks given stream to a specific position.
+///
 /// The given stream must have both read and write capability.
 ///
 /// *Note*: Seek behavior for files opened in append mode is harder
