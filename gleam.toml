@@ -3,7 +3,7 @@ version = "1.0.0"
 
 description = "IO streams for gleam with support for files and stdio."
 licences = ["MIT"]
-#repository = { type = "github", user = "", repo = "" }
+repository = { type = "github", user = "amin-not-found", repo = "gleam_io_streams" }
 
 [dependencies]
 gleam_stdlib = ">= 1.0.0 and < 2.0.0"
