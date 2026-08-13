@@ -41,8 +41,6 @@ Some things that I might or might not add to the package in the future:
 - Support for buffering
 - Functions
   - read_string/read_chars
-  - read_all
-  - read_all_bytes
   - write_char
   - write_lines
   - tell

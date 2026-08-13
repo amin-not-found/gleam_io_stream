@@ -5,8 +5,10 @@
 
     next_byte/1,
     read_bytes/2,
+    read_all_bytes/1,
     next_char/1,
     read_line/1,
+    read_all/1,
 
     write_bytes/2,
     write_string/2,
@@ -85,6 +87,14 @@ read_bytes(IoDevice, Count) ->
             {error, error_with_desc(Reason)}
     end.
 
+read_all_bytes(IoDevice) ->
+    case read_all_chunks(IoDevice, []) of
+        {ok, RevChunks} ->
+            {ok, iolist_to_binary(lists:reverse(RevChunks))};
+        Error ->
+            Error
+    end.
+
 next_char(IoDevice) ->
     case io:get_chars(IoDevice, "", 1) of
         eof ->
@@ -110,6 +120,24 @@ read_line(IoDevice) ->
 
         Line when is_binary(Line) ->
             {ok, Line}
+    end.
+
+read_all(IoDevice) ->
+    case read_all_chunks(IoDevice, []) of
+        {ok, RevChunks} ->
+            case unicode:characters_to_binary(lists:reverse(RevChunks)) of
+                Binary        -> {ok, Binary};
+                {error, _, _} -> {error, {<<"INVALID_UTF8">>, "File contains invalid UTF-8"}}
+            end;
+        Error ->
+            Error
+    end.
+
+read_all_chunks(IoDevice, Acc) ->
+    case file:read(IoDevice, 65536) of
+        {ok, Data} -> read_all_chunks(IoDevice, [Data | Acc]);
+        eof        -> {ok, Acc};
+        {error, Reason} -> {error, error_with_desc(Reason)}
     end.
 
 %% Write operations

@@ -36,6 +36,10 @@ class Handle {
         return buffer.subarray(0, bytesRead);
     }
 
+    readAll() {
+        return fs.readFileSync(this.#fd);
+    }
+
     write(buffer) {
         const bytesWritten = fs.writeSync(
             this.#fd,
@@ -161,6 +165,15 @@ export function read_bytes(handle, count) {
     }
 }
 
+export function read_all_bytes(handle) {
+    try {
+        const buffer = handle.readAll();
+        return Result$Ok(BitArray$BitArray(buffer));
+    } catch (error) {
+        return errorWithDesc(error);
+    }
+}
+
 export function next_char(handle) {
     const buffer = handle.read(1);
 
@@ -237,6 +250,14 @@ export function read_line(handle) {
     }
 }
 
+export function read_all(handle) {
+    try {
+        const buffer = handle.readAll();
+        return Result$Ok(buffer.toString('utf8'));
+    } catch (error) {
+        return errorWithDesc(error);
+    }
+}
 
 // Write operations
 

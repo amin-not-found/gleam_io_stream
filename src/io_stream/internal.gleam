@@ -30,6 +30,10 @@ pub fn read_bytes(
   count: Int,
 ) -> Result(BitArray, #(String, String))
 
+@external(erlang, "io_stream_ffi", "read_all_bytes")
+@external(javascript, "./io_stream_ffi.mjs", "read_all_bytes")
+pub fn read_all_bytes(handle: Handle) -> Result(BitArray, #(String, String))
+
 @external(erlang, "io_stream_ffi", "next_char")
 @external(javascript, "./io_stream_ffi.mjs", "next_char")
 pub fn next_char(handle: Handle) -> Result(String, #(String, String))
@@ -37,6 +41,10 @@ pub fn next_char(handle: Handle) -> Result(String, #(String, String))
 @external(erlang, "io_stream_ffi", "read_line")
 @external(javascript, "./io_stream_ffi.mjs", "read_line")
 pub fn read_line(handle: Handle) -> Result(String, #(String, String))
+
+@external(erlang, "io_stream_ffi", "read_all")
+@external(javascript, "./io_stream_ffi.mjs", "read_all")
+pub fn read_all(handle: Handle) -> Result(String, #(String, String))
 
 @external(erlang, "io_stream_ffi", "write_bytes")
 @external(javascript, "./io_stream_ffi.mjs", "write_bytes")

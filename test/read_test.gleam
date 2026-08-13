@@ -39,6 +39,16 @@ pub fn read_bytes_test() {
   should.equal(read, <<1, 2>>)
 }
 
+pub fn read_all_bytes_test() {
+  let path = io_stream_test.path("read_all_bytes.bin")
+
+  let _ = io_stream_test.create_rw_binary(path, <<1, 2, 3, 4>>)
+
+  let assert Ok(reader) = io_stream.open_read_bin(path)
+  let assert Ok(content) = io_stream.read_all_bytes(reader)
+  should.equal(content, <<1, 2, 3, 4>>)
+}
+
 pub fn read_lines_test() {
   let path = io_stream_test.path("lines.txt")
 
@@ -50,6 +60,16 @@ pub fn read_lines_test() {
 
   should.equal(one, "one\n")
   should.equal(two, "two\n")
+}
+
+pub fn read_all_test() {
+  let path = io_stream_test.path("read_all.txt")
+
+  let _ = io_stream_test.create_rw_text(path, "three\four\n")
+
+  let assert Ok(reader) = io_stream.open_read(path)
+  let assert Ok(content) = io_stream.read_all(reader)
+  should.equal(content, "three\four\n")
 }
 
 pub fn eof_after_last_byte_test() {

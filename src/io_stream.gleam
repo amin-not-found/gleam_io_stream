@@ -151,6 +151,18 @@ pub fn read_bytes(
   |> result.map_error(internal.map_stream_error)
 }
 
+/// Returns all the remaining bytes in the stream.
+/// This uses UTF-8 encoding.
+///
+/// The given stream must have binary format and read capability.
+pub fn read_all_bytes(
+  stream: Stream(mode.Read, _, mode.Binary, _),
+) -> Result(BitArray, error.StreamError) {
+  let Stream(handle) = stream
+  internal.read_all_bytes(handle)
+  |> result.map_error(internal.map_stream_error)
+}
+
 /// Get the next unicode character in the stream. This uses UTF-8 encoding.
 ///
 /// The given stream must have textual format and read capability.
@@ -176,6 +188,18 @@ pub fn read_line(
 ) -> Result(String, error.StreamError) {
   let Stream(handle) = stream
   internal.read_line(handle)
+  |> result.map_error(internal.map_stream_error)
+}
+
+/// Returns all the remaining text in the stream.
+/// This uses UTF-8 encoding.
+///
+/// The given stream must have textual format and read capability.
+pub fn read_all(
+  stream: Stream(mode.Read, _, mode.Text, _),
+) -> Result(String, error.StreamError) {
+  let Stream(handle) = stream
+  internal.read_all(handle)
   |> result.map_error(internal.map_stream_error)
 }
 
