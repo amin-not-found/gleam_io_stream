@@ -123,8 +123,8 @@ read_all(IoDevice) ->
     case read_all_chunks(IoDevice, []) of
         {ok, RevChunks} ->
             case unicode:characters_to_binary(lists:reverse(RevChunks)) of
-                Binary        -> {ok, Binary};
-                {error, _, _} -> {error, {<<"INVALID_UTF8">>, "File contains invalid UTF-8"}}
+                {error, _, _} -> {error, {<<"INVALID_UTF8">>, "File contains invalid UTF-8"}};
+                Binary        -> {ok, Binary}
             end;
         Error ->
             Error
