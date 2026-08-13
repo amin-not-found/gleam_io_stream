@@ -108,18 +108,15 @@ next_char(IoDevice) ->
     end.
 
 read_line(IoDevice) ->
-    case io:get_line(IoDevice, "") of
+    case file:read_line(IoDevice) of
         eof ->
             {error, {<<"EOF">>, "Reached End of file"}};
-
-        {error, Reason} ->
-            {error, error_with_desc(Reason)};
-
-        Line when is_list(Line) ->
+        {ok, Line} ->
             {ok, unicode:characters_to_binary(Line)};
-
-        Line when is_binary(Line) ->
-            {ok, Line}
+        {error, Reason} when Reason =:= invalid_utf8; is_tuple(Reason) ->
+            {error, {<<"INVALID_UTF8">>, "File contains invalid UTF-8"}};
+        {error, Reason} ->
+            {error, error_with_desc(Reason)}
     end.
 
 read_all(IoDevice) ->
