@@ -1,4 +1,4 @@
--module(io_streams_ffi).
+-module(io_stream_ffi).
 
 -export([
     open/2,

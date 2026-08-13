@@ -1,31 +1,31 @@
 import gleam/result
-import internal/modes
-import io_streams/errors
-import io_streams/internal
+import internal/mode
+import io_stream/error
+import io_stream/internal
 
 pub type TextReader =
-  Stream(modes.Read, modes.NoWrite, modes.Text, modes.Seek)
+  Stream(mode.Read, mode.NoWrite, mode.Text, mode.Seek)
 
 pub type BinaryReader =
-  Stream(modes.Read, modes.NoWrite, modes.Binary, modes.Seek)
+  Stream(mode.Read, mode.NoWrite, mode.Binary, mode.Seek)
 
 pub type TextWriter =
-  Stream(modes.NoRead, modes.Write, modes.Text, modes.Seek)
+  Stream(mode.NoRead, mode.Write, mode.Text, mode.Seek)
 
 pub type BinaryWriter =
-  Stream(modes.NoRead, modes.Write, modes.Binary, modes.Seek)
+  Stream(mode.NoRead, mode.Write, mode.Binary, mode.Seek)
 
 pub type TextAppender =
-  Stream(modes.NoRead, modes.Write, modes.Text, modes.NoSeek)
+  Stream(mode.NoRead, mode.Write, mode.Text, mode.NoSeek)
 
 pub type BinaryAppender =
-  Stream(modes.NoRead, modes.Write, modes.Binary, modes.NoSeek)
+  Stream(mode.NoRead, mode.Write, mode.Binary, mode.NoSeek)
 
 pub type TextChannel =
-  Stream(modes.Read, modes.Write, modes.Text, modes.Seek)
+  Stream(mode.Read, mode.Write, mode.Text, mode.Seek)
 
 pub type BinaryChannel =
-  Stream(modes.Read, modes.Write, modes.Binary, modes.Seek)
+  Stream(mode.Read, mode.Write, mode.Binary, mode.Seek)
 
 /// The type that represents io streams.
 ///
@@ -35,14 +35,14 @@ pub opaque type Stream(read_cap, write_cap, enc_cap, seek_cap) {
 }
 
 /// Open file in textual read mode
-pub fn open_read(path: String) -> Result(TextReader, errors.SystemError) {
+pub fn open_read(path: String) -> Result(TextReader, error.SystemError) {
   internal.open_read(path)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
 }
 
 /// Open file in binary read mode
-pub fn open_read_bin(path: String) -> Result(BinaryReader, errors.SystemError) {
+pub fn open_read_bin(path: String) -> Result(BinaryReader, error.SystemError) {
   internal.open_read_bin(path)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
@@ -54,7 +54,7 @@ pub fn open_read_bin(path: String) -> Result(BinaryReader, errors.SystemError) {
 pub fn open_write(
   path: String,
   exclusive: Bool,
-) -> Result(TextWriter, errors.SystemError) {
+) -> Result(TextWriter, error.SystemError) {
   internal.open_write(path, exclusive)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
@@ -66,7 +66,7 @@ pub fn open_write(
 pub fn open_write_bin(
   path: String,
   exclusive: Bool,
-) -> Result(BinaryWriter, errors.SystemError) {
+) -> Result(BinaryWriter, error.SystemError) {
   internal.open_write_bin(path, exclusive)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
@@ -78,7 +78,7 @@ pub fn open_write_bin(
 pub fn open_append(
   path: String,
   exclusive: Bool,
-) -> Result(TextAppender, errors.SystemError) {
+) -> Result(TextAppender, error.SystemError) {
   internal.open_append(path, exclusive)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
@@ -90,7 +90,7 @@ pub fn open_append(
 pub fn open_append_bin(
   path: String,
   exclusive: Bool,
-) -> Result(BinaryAppender, errors.SystemError) {
+) -> Result(BinaryAppender, error.SystemError) {
   internal.open_append_bin(path, exclusive)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
@@ -105,7 +105,7 @@ pub fn open_append_bin(
 pub fn open_rw(
   path: String,
   truncate: Bool,
-) -> Result(TextChannel, errors.SystemError) {
+) -> Result(TextChannel, error.SystemError) {
   internal.open_rw(path, truncate)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
@@ -120,7 +120,7 @@ pub fn open_rw(
 pub fn open_rw_bin(
   path: String,
   truncate: Bool,
-) -> Result(BinaryChannel, errors.SystemError) {
+) -> Result(BinaryChannel, error.SystemError) {
   internal.open_rw_bin(path, truncate)
   |> result.map_error(internal.map_system_error)
   |> result.map(Stream)
@@ -130,8 +130,8 @@ pub fn open_rw_bin(
 ///
 /// The given stream must have binary format and read capability.
 pub fn next_byte(
-  stream: Stream(modes.Read, _, modes.Binary, _),
-) -> Result(Int, errors.StreamError) {
+  stream: Stream(mode.Read, _, mode.Binary, _),
+) -> Result(Int, error.StreamError) {
   let Stream(handle) = stream
   internal.next_byte(handle)
   |> result.map_error(internal.map_stream_error)
@@ -143,9 +143,9 @@ pub fn next_byte(
 ///
 /// `count`: number of bytes to reads
 pub fn read_bytes(
-  stream: Stream(modes.Read, _, modes.Binary, _),
+  stream: Stream(mode.Read, _, mode.Binary, _),
   count: Int,
-) -> Result(BitArray, errors.StreamError) {
+) -> Result(BitArray, error.StreamError) {
   let Stream(handle) = stream
   internal.read_bytes(handle, count)
   |> result.map_error(internal.map_stream_error)
@@ -155,8 +155,8 @@ pub fn read_bytes(
 ///
 /// The given stream must have textual format and read capability.
 pub fn next_char(
-  stream: Stream(modes.Read, _, modes.Text, _),
-) -> Result(String, errors.StreamError) {
+  stream: Stream(mode.Read, _, mode.Text, _),
+) -> Result(String, error.StreamError) {
   let Stream(handle) = stream
   internal.next_char(handle)
   |> result.map_error(internal.map_stream_error)
@@ -172,8 +172,8 @@ pub fn next_char(
 /// *Note*: If the stream ends before a break line is found,
 /// this function returns characters up to end of file.
 pub fn read_line(
-  stream: Stream(modes.Read, _, modes.Text, _),
-) -> Result(String, errors.StreamError) {
+  stream: Stream(mode.Read, _, mode.Text, _),
+) -> Result(String, error.StreamError) {
   let Stream(handle) = stream
   internal.read_line(handle)
   |> result.map_error(internal.map_stream_error)
@@ -185,9 +185,9 @@ pub fn read_line(
 ///
 /// The given stream must have binary format and write capability.
 pub fn write_bytes(
-  stream: Stream(_, modes.Write, modes.Binary, _),
+  stream: Stream(_, mode.Write, mode.Binary, _),
   bytes: BitArray,
-) -> Result(Nil, errors.StreamError) {
+) -> Result(Nil, error.StreamError) {
   let Stream(handle) = stream
   internal.write_bytes(handle, bytes)
   |> result.map_error(internal.map_stream_error)
@@ -197,9 +197,9 @@ pub fn write_bytes(
 ///
 /// The given stream must have textual format and write capability.
 pub fn write_string(
-  stream: Stream(_, modes.Write, modes.Text, _),
+  stream: Stream(_, mode.Write, mode.Text, _),
   string: String,
-) -> Result(Nil, errors.StreamError) {
+) -> Result(Nil, error.StreamError) {
   let Stream(handle) = stream
   internal.write_string(handle, string)
   |> result.map_error(internal.map_stream_error)
@@ -209,9 +209,9 @@ pub fn write_string(
 ///
 /// The given stream must have textual format and write capability.
 pub fn write_line(
-  stream: Stream(_, modes.Write, modes.Text, _),
+  stream: Stream(_, mode.Write, mode.Text, _),
   string: String,
-) -> Result(Nil, errors.StreamError) {
+) -> Result(Nil, error.StreamError) {
   let Stream(handle) = stream
   internal.write_line(handle, string)
   |> result.map_error(internal.map_stream_error)
@@ -220,7 +220,7 @@ pub fn write_line(
 // Generic operations
 
 /// Closes given stream.
-pub fn close(stream: Stream(_, _, _, _)) -> Result(Nil, errors.StreamError) {
+pub fn close(stream: Stream(_, _, _, _)) -> Result(Nil, error.StreamError) {
   let Stream(handle) = stream
   internal.close(handle)
   |> result.map_error(internal.map_stream_error)
@@ -233,9 +233,9 @@ pub fn close(stream: Stream(_, _, _, _)) -> Result(Nil, errors.StreamError) {
 /// *Note*: Seek behavior for files opened in append mode is harder
 /// to get right in both Erlang ans Js and thus isn't implemented.
 pub fn seek(
-  stream: Stream(modes.Read, modes.Write, _, modes.Seek),
+  stream: Stream(mode.Read, mode.Write, _, mode.Seek),
   position: Int,
-) -> Result(Nil, errors.StreamError) {
+) -> Result(Nil, error.StreamError) {
   let Stream(handle) = stream
   internal.seek(handle, position)
   |> result.map_error(internal.map_stream_error)
@@ -245,8 +245,8 @@ pub fn seek(
 ///
 /// *Note*: stdout/stderr actually can't be synced.
 pub fn sync(
-  stream: Stream(_, modes.Write, _, _),
-) -> Result(Nil, errors.StreamError) {
+  stream: Stream(_, mode.Write, _, _),
+) -> Result(Nil, error.StreamError) {
   let Stream(handle) = stream
   internal.sync(handle)
   |> result.map_error(internal.map_stream_error)
